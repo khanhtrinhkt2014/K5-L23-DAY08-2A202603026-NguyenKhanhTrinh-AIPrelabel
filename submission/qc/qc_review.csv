@@ -1,0 +1,7 @@
+image,object_id,error_type,reviewer,note
+img_003.jpg,7,sai_thuoc_tinh,NguyenKhanhTrinh,"vật ở mép phải là xe/quầy hàng có mái, bị cắt mép, không thấy bánh để xác nhận 3 bánh -> phải tick can_review (guideline 4.3)"
+img_006.jpg,,bo_sot,NguyenKhanhTrinh,"hàng xe máy đỗ bên trái (x ~450-515, y ~330-500): 1-2 xe phía sau #77 thấy rõ biển số nhưng không có box"
+img_006.jpg,77,sai_vi_tri_kich_thuoc,NguyenKhanhTrinh,"box motorbike ôm lẫn nhiều xe trong hàng đỗ, rộng hơn chiếc xe nó đại diện"
+img_014.jpg,152,sai_vi_tri_kich_thuoc,NguyenKhanhTrinh,"xe máy đỗ sát camera (góc dưới phải): mép trên box ở y ~473, yên xe bắt đầu ở y ~600 -> box lỏng ~130 px"
+img_031.jpg,,khong,NguyenKhanhTrinh,"3 vật đúng lớp, box ôm sát; box xe đạp không gồm khay trái cây nhô ra"
+img_035.jpg,570,sai_lop,NguyenKhanhTrinh,"ignore_region phủ lên xe máy đỗ rõ (cao ~90 px, đã có box #559/#572), không phải cụm vật < 20 px (guideline 4.1.6)"

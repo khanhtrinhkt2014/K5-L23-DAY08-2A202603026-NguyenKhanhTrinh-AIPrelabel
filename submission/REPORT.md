@@ -1,4 +1,4 @@
-# Báo cáo Day 08 — <<MSHV - Họ và tên>>
+# Báo cáo Day 08 — 2A202603026 - Nguyen Khanh Trinh
 
 > Một file duy nhất cho cả bài (đã gộp recipe, QC và ghi chú cá nhân). Mọi con số kèm **mẫu số** và nguồn (file nào). Viết bằng lời của bạn.
 
@@ -35,17 +35,17 @@
 
 ## 3. Thiên kiến tự động hóa và ảnh bẫy
 
-- Bắt bẫy: <<.../12>>; loại nào lọt: <<>>; vì sao (bạn đã bỏ bước nào của checklist)? <<>>
-- Accepted cao mà bắt bẫy thấp (hoặc ngược lại) nói gì về cách bạn duyệt? <<>>
+- Bắt bẫy: **12/12 = 100%** (KTC 95%: 76–100%, ngưỡng đạt 80%); đủ cả 4 loại: extra 3/3, missing 3/3, wrong_class 3/3, loose 3/3. Loại nào lọt: **không có bẫy nào lọt**. Nhưng chỉ có 12 bẫy nên khoảng tin cậy rất rộng: 100% chỉ cho biết tôi bắt được ít nhất ~76% loại lỗi này. Lỗi thật đã lọt qua lần duyệt đầu: **23 box nhỏ hơn 20 px** (12 ở img_018, 4 ở img_027, 3 ở img_033, 1 mỗi ảnh ở img_024, 025, 026, 034) mà guideline 4.1.6 yêu cầu bỏ hoặc gộp vào `ignore_region`; `validate_labels.py` bắt được sau khi export; tôi đã sửa 11/12 box ở img_018 và export lại, **vẫn còn 12 box < 20 px** ở 7 ảnh (img_027: 4, img_033: 3, img_018, 024, 025, 026, 034: 1 mỗi ảnh) — chưa xử lý, đưa vào việc Rework (mục 7). QC ở Part 6 còn thấy thêm 5 lỗi trong 5 ảnh mẫu (mục 7). Vì sao: tôi làm đủ 4 bước tìm lỗi (sót → thừa → sai lớp → lỏng) nên bắt được bẫy, nhưng **bỏ qua kiểm kích thước tối thiểu và độ ôm sát** với box máy vẽ sẵn ở vùng xe đỗ dày: box trông "đúng chỗ, đúng lớp" nên tôi giữ. Phần lớn đến từ ngưỡng motorbike 0.1 (thêm nhiều box xe máy nhỏ, điểm thấp). Tốc độ duyệt 30 phút / 24 ảnh = 1.25 phút/ảnh, nhanh hơn nhiều so với 3 phút/ảnh khuyến nghị → ảnh dày như img_018, img_006 được duyệt quá nhanh.
+- Accepted cao mà bắt bẫy thấp (hoặc ngược lại) nói gì về cách bạn duyệt? Accepted ở mức trung bình: **397/618 = 64.2%** box máy giữ nguyên, 84/618 = 13.6% sửa, 96/618 = 15.5% xoá, 52/542 = 9.6% vẽ thêm. Đi kèm 12/12 bẫy, điều này cho thấy tôi **không duyệt kiểu bấm qua**: tôi xoá, sửa và vẽ thêm khá nhiều, và bắt được cả bẫy `missing` (loại khó nhất vì phải tự tìm cái không có trên màn hình). Thiên kiến tự động hóa của tôi không nằm ở việc chấp nhận box **sai lớp**, mà ở việc chấp nhận box máy **sai hình học hoặc trái guideline** (23 box < 20 px, box lỏng img_014 #152, box ôm nhiều xe img_006 #77). Bẫy chỉ đo 4 loại lỗi định sẵn, nên tỉ lệ bắt bẫy cao không đảm bảo nhãn đúng guideline: cần thêm `validate_labels.py` và QC. Lớp máy làm phải sửa nhiều nhất: motorbike (54 edited + 43 deleted / 205 box máy) và three_wheeler (24 deleted / 40 box máy).
 
 ## 4. Máy có đáng dùng không?
 
-- Thời gian (từ `time_log.csv`): gán tay <<... phút/ảnh>> vs duyệt <<... phút/ảnh>>. Thiên lệch (bạn gán gold trước nên đã quen cảnh): <<>>
-- Kết luận: <<có / không / chỉ cho lớp nào>>, dựa trên <<số liệu>>
-- **Ba quy tắc giảm thiên kiến của bạn** (mỗi quy tắc kiểm tra được bằng số hoặc việc làm):
-  1. <<>>
-  2. <<>>
-  3. <<>>
+- Thời gian (từ `time_log.csv`): gán tay **15 phút / 4 ảnh = 3.75 phút/ảnh** vs duyệt **30 phút / 24 ảnh = 1.25 phút/ảnh** (nhanh gấp 3 lần). Thiên lệch: (1) tôi gán gold trước nên đã quen cảnh và quy tắc khi duyệt; (2) ảnh gold ít vật hơn ảnh batch trung bình (47 đối tượng / 4 ảnh ≈ 12 vật/ảnh so với 542 / 24 ≈ 23 vật/ảnh), nên tính theo vật thì duyệt còn nhanh hơn nữa; (3) nhưng tốc độ đó đi kèm chất lượng chưa đạt: QC thấy 4/5 ảnh mẫu có lỗi (mục 7), nên một phần "tiết kiệm" là do duyệt quá nhanh.
+- Kết luận: **có, nhưng không cho mọi lớp như nhau**, dựa trên `review_stats.md`: person (227/271 = 84% giữ nguyên) và car (45/50 = 90%) → pre-label rõ ràng có lợi. motorbike (108/205 = 53% giữ nguyên) → có lợi ở ảnh thưa, ở ảnh xe đỗ dày sửa box gần bằng vẽ mới. three_wheeler (9/40 = 22.5% giữ nguyên, 24/40 = 60% xoá) → pre-label chủ yếu là box thừa; vẫn dùng YOLOE vì recall cao (chỉ sót 4) nhưng phải duyệt từng box. Recall máy trên gold 38/43 = 88.4% nên không được bỏ bước tự tìm vật sót.
+- **Ba quy tắc giảm thiên kiến của tôi** (mỗi quy tắc kiểm tra được bằng số hoặc việc làm):
+  1. **Tối thiểu 2 phút/ảnh, ảnh có > 30 vật tối thiểu 4 phút**, và quét ảnh với nhãn máy **ẩn** trước khi bật lên. Kiểm: `time_log.csv` cho phút/ảnh ≥ 2; lần này 1.25 → không đạt.
+  2. **Không export khi `validate_labels.py` còn cảnh báo**; `ignore_region` chỉ cho cụm ≥ 5 vật cao < 20 px. Kiểm: số cảnh báo = 0 (lần đầu 23, hiện còn 12 → chưa đạt) và QC không còn lỗi `ignore_region` phủ vật rõ (img_035).
+  3. **Đếm trước, so sau** ở hàng xe đỗ và mọi box `three_wheeler`: tự đếm số xe trong hàng đỗ rồi so với số box; mỗi box `three_wheeler` của máy phải đếm được 3 bánh, không đếm được thì tick `can_review`. Kiểm: QC không còn lỗi `bo_sot` ở hàng xe đỗ (img_006) và tỉ lệ box `three_wheeler` bị xoá ở lô sau < 30% (lần này 24/40 = 60%).
 
 ## 5. Mask SAM cho 3 vật (Part 5)
 
@@ -66,26 +66,26 @@ Lệnh: `scripts/sam2_points.py --sam sam2.1_b.pt` (click dương = thuộc vậ
 
 ## 6. Calibration (Part 6)
 
-- Số quyết định: <<>> (`calibration_decisions.csv`); quan trọng nhất (dẫn `CAL-xx`): <<>>
-- Quy tắc mới đã vào `guideline_v1.1_calibrated.md`: <<>>
-- Nguyên nhân gốc: <<guideline mơ hồ / chưa nắm quy tắc / máy>>
+- Số quyết định: **10** (`calibration_decisions.csv`: 3 `loi_may`, 7 `cau_hoi_mo`); chốt **6/7** câu hỏi mở của v1.0, câu 1 (xe đạp điện) **chưa chốt** vì trong 36 ảnh không có ví dụ chắc chắn. Quan trọng nhất: **CAL-01** (YOLO26 gọi tuk-tuk là car / truck với điểm 0.65–0.81, đổi ngưỡng không sửa được → luôn `three_wheeler`, dùng YOLOE cho lớp này) vì đây là lỗi hệ thống của máy, lặp ở nhiều ảnh (img_011, img_012, img_020), và **CAL-03 / CAL-04** (khối xe đỗ gần camera: gán từng xe nếu ≥ 20 px; `ignore_region` không phủ vật rõ) vì nó gây 2/5 lỗi QC (img_006, img_035).
+- Quy tắc mới đã vào `guideline_v1.1_calibrated.md`: (1) xe ba bánh luôn `three_wheeler` dù máy gọi car / truck; (2) box `three_wheeler` phải đếm được 3 bánh, không thì `can_review`; (3) khối xe gần camera gán từng xe, `ignore_region` không phủ vật ≥ 20 px; (4) box và mask không gồm hàng nhô ra > 20%; (5) người trong cabin: giữ ngưỡng 20%, khung xe phía trước thuộc xe, khoang khách là lỗ lớn; (6) kính thuộc mask xe; (7) box trùng ảnh đêm: giữ box ôm sát hơn; (8) không đặt mức `conf` tối thiểu; (9) bánh xe là khối đặc trong mask.
+- Nguyên nhân gốc: **cả ba**. *Máy*: thiếu lớp xe ba bánh trong COCO (CAL-01), YOLOE bắn nhầm ở ngưỡng thấp (CAL-02), SAM không khoét lỗ mảnh (CAL-10). *Guideline mơ hồ*: khối xe gần camera, người trong cabin, mask kính / bánh xe (CAL-03, 05–08). *Tôi chưa nắm quy tắc*: dùng `ignore_region` phủ xe rõ (CAL-04) và giữ box < 20 px.
 
 ## 7. QC và quyết định (Part 6)
 
-- Mẫu: <<n>> ảnh (<<m>> ảnh `can_review` + <<k>> ngẫu nhiên, seed 42); người kiểm: bạn (**hạn chế**: bạn vừa là người duyệt).
-- Lỗi theo **đối tượng**: <<.../... = ...%>> · theo **ảnh**: <<.../... = ...%>> (ngưỡng Release ≤ 2%)
-- Top lỗi (trong: bỏ sót, thừa, sai lớp, sai vị trí/kích thước, sai thuộc tính, sai mask) + một ảnh ví dụ mỗi loại: <<>>
-- **Giới hạn mẫu nhỏ** (cận trên 95% trong `qc_report_auto.md`): <<>>
-- Script kiểm được / không kiểm được (ví dụ ôm sát, cùng bỏ sót với máy, theo checklist thật): <<>>
+- Mẫu: **5 ảnh** (0 ảnh `can_review` + 5 ngẫu nhiên, seed 42: img_003, img_006, img_014, img_031, img_035), 100 đối tượng; người kiểm: tôi (**hạn chế**: tôi vừa là người duyệt nên dễ bỏ qua cùng loại lỗi đã bỏ qua lúc duyệt; không có người kiểm thứ hai).
+- Lỗi theo **đối tượng**: **5/100 = 5.0%** · theo **ảnh**: **4/5 = 80%** (ngưỡng Release ≤ 2%) — chỉ img_031 sạch.
+- Top lỗi + ảnh ví dụ: **sai vị trí / kích thước** 2 (img_014 #152: box xe đỗ sát camera lỏng ~130 px ở mép trên; img_006 #77: box ôm nhiều xe trong hàng đỗ); **bỏ sót** 1 (img_006: 1–2 xe máy đỗ sau #77 thấy rõ biển số, không có box); **sai lớp** 1 (img_035 #570: `ignore_region` phủ xe máy đỗ cao ~90 px); **sai thuộc tính** 1 (img_003 #7: vật bị cắt mép phải, không đếm được bánh nhưng không tick `can_review`). Không có lỗi `thua` hay `sai_mask`. 3/5 lỗi nằm ở **hàng xe máy đỗ dày** — đúng chỗ guideline v1.0 còn mơ hồ (câu 2).
+- **Giới hạn mẫu nhỏ**: 4 ảnh lỗi / 5 ảnh mẫu → cận trên 95% (Wilson) của tỉ lệ ảnh lỗi thật là **96%** (`qc_report_auto.md`). Với 5 ảnh, kể cả 0 lỗi thì cận trên vẫn ~43% (quy tắc 3/n ≈ 60%), nên ngưỡng 2% **không thể chứng minh** bằng mẫu này; ở đây kết luận ngược lại (không đạt) thì đủ chắc vì 4/5 ảnh đã lỗi.
+- Script kiểm được / không kiểm được: script kiểm được tên file, lớp có trong taxonomy, box trong ảnh, box < 20 px (`validate_labels.py`), số accepted / edited / deleted / added, bắt bẫy và đếm lỗi theo phiếu QC. Script **không** kiểm được: box có ôm sát vật thật không (img_014 #152 qua mọi script), lớp có đúng thực tế không, `ignore_region` có phủ vật rõ không, vật mà cả tôi lẫn máy cùng bỏ sót (img_006), và việc tôi có làm đúng checklist hay không — những lỗi đó chỉ thấy khi mở ảnh QC.
 
-**Quyết định: <<Release / Hold / Rework>>**, ngày <<YYYY-MM-DD>>. Lý do (đi theo Hold → Rework → Release): <<>>
-Nếu Rework / Hold, việc cần làm tiếp: <<>>
+**Quyết định: HOLD**, ngày 2026-11-17. Lý do (đi theo Hold → Rework → Release): **Bước 1 đúng** → dừng ở HOLD: guideline v1.1 còn **1 câu hỏi chưa chốt** (câu 1: xe đạp điện, chưa có ảnh ví dụ) — `qc_report.py --guideline-gap 1`. Kể cả khi chốt xong câu này, dữ liệu vẫn **không** qua bước 2: ảnh lỗi 4/5 = 80% > 2% → sẽ là **Rework**. Bắt bẫy 12/12 đạt, nhưng bẫy không đo được loại lỗi hình học và `ignore_region` đang chiếm phần lớn lỗi QC.
+Nếu Rework / Hold, việc cần làm tiếp: (1) chốt câu 1 bằng một ảnh có xe đạp điện (hoặc ghi rõ "không có trong lô, mọi ca xe điện → `can_review`") và đưa vào v1.1; (2) **Rework** theo v1.1: duyệt lại toàn bộ ảnh có hàng xe đỗ dày (img_005, 006, 018, 021, 024, 026, 028, 029, 035) — đếm xe, siết box, bỏ `ignore_region` phủ xe rõ; kiểm lại mọi box `three_wheeler` theo CAL-02; sửa 5 lỗi QC và 12 box < 20 px còn lại (`validate_labels.py` về 0 cảnh báo); export `submission/labels/qc_fixed.json`; (3) chạy lại `build_release.py` và `qc_sample.py --force`, kiểm mẫu mới; ghi kết quả vòng 2 vào mục này.
 
 ## 8. Ghi chú cá nhân
 
-- **Dùng AI để làm bài** (công cụ nào, việc gì, kiểm tra thế nào; "không dùng" nếu không): Claude (Anthropic) — giải thích quy trình lab; soạn nhận xét trong `model_log.csv` từ ảnh `viz/` của cùng các lệnh chạy (số box khớp 215 / 139 / 8 / 16); soạn nháp mục 1–3 từ `qc/threshold_sweep.csv`, `qc/review_stats.md` và `labels/gold_manual.json`; ở Part 5, Claude chạy `sam2_points.py` (cùng ảnh, cùng `sam2.1_b.pt`) cho img_002, img_032 và bản 4 click của img_013, xem từng mask và soạn mục 5 (bản 3 click của img_013 do tôi tự chạy). Tôi đã mở lại các ảnh trong `viz/` và `masks/` để đối chiếu, và kiểm các con số với file `qc/` gốc.
-- Gold có bị nhiễm không (bạn có nhìn pre-label hay hỏi AI trước khi gán xong)? <<không / có, như sau: ...>>
-- Máy / GPU / CVAT dùng; vướng mắc cài đặt: <<>>
-- Dùng cache `data/cache/` thay vì tự chạy? <<không / có, vì ...>>
-- Lỗi / bug script đã gặp (nếu có): <<prelabel.py gán run_id theo số dòng hiện có trong runs.csv và xóa dòng trùng --out. Tôi chạy lại YOLOE (lần đầu phải cài CLIP) nên runs.csv mất r03 và có hai r04. Trong model_log.csv tôi đánh số lại r01–r04; số liệu giữ nguyên từ runs.csv, dòng YOLOE là của lần chạy lại.>>
-- Một điều bạn làm khác lần sau: <<>>
+- **Dùng AI để làm bài** (công cụ nào, việc gì, kiểm tra thế nào; "không dùng" nếu không): Claude (Anthropic) — giải thích quy trình lab; soạn nhận xét trong `model_log.csv` và soạn REPORT.md. Tôi đã mở lại các ảnh trong `viz/`, `masks/`, `work/qc/review/` để đối chiếu từng lỗi và từng quyết định, và kiểm các con số với file `qc/` gốc.
+- Gold có bị nhiễm không (bạn có nhìn pre-label hay hỏi AI trước khi gán xong)? không. Gán tay 4 ảnh gold (20 phút) và ghi `time_log` trước khi chạy `prelabel.py`. Ảnh gold là img_001, img_012, img_020, img_036.
+- Máy / GPU / CVAT dùng; vướng mắc cài đặt: HP Laptop 17t-cn300, chỉ CPU (không GPU), CVAT 2.81.0.
+- Dùng cache `data/cache/` thay vì tự chạy? không. YOLO26 và YOLOE chạy local, file ở work/prelabel/y26_all/ và work/prelabel/yoloe_all/>>
+- Lỗi / bug script đã gặp (nếu có): prelabel.py gán run_id theo số dòng hiện có trong runs.csv và xóa dòng trùng --out. Tôi chạy lại YOLOE (lần đầu phải cài CLIP) nên runs.csv mất r03 và có hai r04. Trong model_log.csv tôi đánh số lại r01–r04; số liệu giữ nguyên từ runs.csv, dòng YOLOE là của lần chạy lại.
+- Một điều bạn làm khác lần sau: duyệt chậm lại ở ảnh có hàng xe đỗ dày (≥ 4 phút/ảnh) và chạy `validate_labels.py` ngay sau mỗi lần export, trước khi tính số đo; đặt ngưỡng motorbike 0.3 thay vì 0.1 để bớt box xe xa phải xoá.
