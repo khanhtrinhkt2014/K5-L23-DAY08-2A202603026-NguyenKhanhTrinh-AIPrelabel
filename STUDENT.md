@@ -1,12 +1,12 @@
 # Thông tin học viên
 
-- Họ và tên: <<>>
-- MSHV: <<>>
-- Lớp (L2 / L3 / khác): <<>>
-- Tài khoản GitHub: <<>>
-- Repo bài nộp (URL): <<>>
+- Họ và tên: <<Nguyễn Khánh Trình>>
+- MSHV: <<2A202603026>>
+- Lớp (L2 / L3 / khác): <<L2>>
+- Tài khoản GitHub: <<khanhtrinhkt2014>>
+- Repo bài nộp (URL): <<https://github.com/khanhtrinhkt2014/K5-L23-DAY08-2A202603026-NguyenKhanhTrinh-AIPrelabel.git>>
 - Commit chốt bài (hash): <<>>
-- Máy: <<hệ điều hành, GPU (CUDA / MPS / không có)>>
+- Máy: <<Win11, GPU (CUDA / MPS / không có)>>
 - CVAT (Docker): <<phiên bản, ví dụ v2.81.0>>
 
 ## Kết quả tóm tắt (điền cuối bài; số lấy từ `submission/qc/*`, kèm mẫu số)
