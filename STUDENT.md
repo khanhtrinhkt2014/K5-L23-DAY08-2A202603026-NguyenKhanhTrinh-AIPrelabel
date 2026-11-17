@@ -1,12 +1,12 @@
 # Thông tin học viên
 
-- Họ và tên: Nguyen Khanh Trinh
+- Họ và tên: Nguyễn Khánh Trình
 - MSHV: 2A202603026
-- Lớp (L2 / L3 / khác): (điền lớp)
+- Lớp (L2 / L3 / khác): L2
 - Tài khoản GitHub: khanhtrinhkt2014
 - Repo bài nộp (URL): https://github.com/khanhtrinhkt2014/K5-L23-DAY08-2A202603026-NguyenKhanhTrinh-AIPrelabel
 - Commit chốt bài (hash): (điền sau commit cuối)
-- Máy: Windows, HP Laptop 17t-cn300, không GPU (chạy CPU)
+- Máy: Win11, HP Laptop 17t-cn300, không GPU (chạy CPU)
 - CVAT (Docker): v2.81.0
 
 ## Kết quả tóm tắt (điền cuối bài; số lấy từ `submission/qc/*`, kèm mẫu số)
