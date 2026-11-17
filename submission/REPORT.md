@@ -73,5 +73,5 @@ Nếu Rework / Hold, việc cần làm tiếp: <<>>
 - Gold có bị nhiễm không (bạn có nhìn pre-label hay hỏi AI trước khi gán xong)? <<không / có, như sau: ...>>
 - Máy / GPU / CVAT dùng; vướng mắc cài đặt: <<>>
 - Dùng cache `data/cache/` thay vì tự chạy? <<không / có, vì ...>>
-- Lỗi / bug script đã gặp (nếu có): <<>>
+- Lỗi / bug script đã gặp (nếu có): <<prelabel.py gán run_id theo số dòng hiện có trong runs.csv và xóa dòng trùng --out. Tôi chạy lại YOLOE (lần đầu phải cài CLIP) nên runs.csv mất r03 và có hai r04. Trong model_log.csv tôi đánh số lại r01–r04; số liệu giữ nguyên từ runs.csv, dòng YOLOE là của lần chạy lại.>>
 - Một điều bạn làm khác lần sau: <<>>
