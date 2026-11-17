@@ -19,13 +19,19 @@
 
 | Trạng thái | Số | Tỉ lệ | Mẫu số |
 |---|---|---|---|
-| accepted | <<>> | <<>> | <<box máy>> |
-| edited | <<>> | <<>> | <<>> |
-| deleted | <<>> | <<>> | <<>> |
-| added | <<>> | <<>> | <<đối tượng sau duyệt>> |
+| accepted | 397 | 397/618 = 64.2% | 618 box máy |
+| edited | 84 | 84/618 = 13.6% | 618 box máy |
+| deleted | 96 | 96/618 = 15.5% | 618 box máy |
+| added | 52 | 52/542 = 9.6% | 542 đối tượng sau duyệt |
 
-- Lớp nào máy tệ nhất? Vì sao (dẫn ảnh)? <<>>
-- So với gold: precision / recall của **máy** <<>> (mẫu số: <<đối tượng gold>>)
+(Đã loại 30 đối tượng quanh 12 bẫy. Trong deleted + added có 9 trường hợp là **đổi lớp**, box đúng chỗ nhưng máy gán sai lớp, nên số vật máy **sót thật** ≈ 52 − 9 = 43.)
+
+- Lớp nào máy tệ nhất? Vì sao (dẫn ảnh)?
+  - **three_wheeler tệ nhất**: chỉ 9/40 box máy được giữ nguyên (22.5%), **24/40 = 60% bị xoá**. Ngưỡng 0.15 chọn để đạt recall 100% trên gold, nên YOLOE bắn nhiều box: nhiều box trùng trên cùng một xe và nhiều box ôm nhầm xe khác (ô tô, pickup, xe chở hàng, xe máy kéo hàng). Box bị xoá dồn vào img_003 (6 box), img_010 (3), img_014 (3), img_013, img_018 và img_023 (2 mỗi ảnh). Đổi lại, máy chỉ sót 4 xe ba bánh (added = 4): ngưỡng thấp đổi box thừa lấy recall cao, đúng như ý định ở mục 1.
+  - **motorbike tốn công nhất**: trong 205 box máy, 54 phải sửa (26%) và 43 phải xoá (21%), chỉ 108 giữ nguyên (53%). Box phải sửa dồn vào ảnh dày xe máy: img_026 (9), img_018, img_021, img_034 (6 mỗi ảnh), img_029, img_035 (5). Ở đó xe chồng lên nhau nên box ôm lẫn người hoặc xe bên cạnh. Box bị xoá phần lớn là xe xa, điểm thấp, được giữ lại vì ngưỡng motorbike 0.1.
+  - **person tốt nhất**: 227/271 box máy giữ nguyên (84%). Nhưng người cũng là lớp máy sót nhiều nhất về số lượng (added = 23), chủ yếu người bị che hoặc ở xa.
+  - car: 45/50 giữ nguyên (90%), sót 8. bus và truck quá ít box (3 và 4) để kết luận.
+- So với gold: precision / recall của **máy**: **precision 38/65 = 58.5%** (KTC 95%: 46–70%), **recall 38/43 = 88.4%** (KTC 95%: 76–95%). Mẫu số: 43 đối tượng gold trên 4 ảnh, không tính 4 `ignore_region`. Máy bỏ sót 5/43 vật nhưng có 27 box thừa: cứ khoảng 5 box máy thì 2 box sai. Con số này **lạc quan** vì ngưỡng được chọn trên chính 4 ảnh gold; khoảng tin cậy rộng (recall có thể chỉ ~76%), nên không được bỏ bước tự tìm vật sót khi duyệt.
 
 ## 3. Thiên kiến tự động hóa và ảnh bẫy
 
