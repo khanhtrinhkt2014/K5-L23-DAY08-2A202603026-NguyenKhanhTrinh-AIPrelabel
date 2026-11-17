@@ -49,12 +49,20 @@
 
 ## 5. Mask SAM cho 3 vật (Part 5)
 
+Lệnh: `scripts/sam2_points.py --sam sam2.1_b.pt` (click dương = thuộc vật, click âm = không thuộc vật; toạ độ pixel trên ảnh gốc 1024 px). Mỗi vật 1 polygon liền khối.
+
 | Ảnh | SAM (phiên bản) | Số click | Mask gồm người lái / hàng hoá? | Lỗi quan sát | File trong `masks/` |
 |---|---|---|---|---|---|
-| <<img_0xx>> | <<>> | <<>> | <<>> | <<>> | <<>> |
+| img_013 (tuk-tuk có người lái, chiếm ~45% ảnh) | SAM 2.1 base (`sam2.1_b.pt`) | 3 (2 dương mui + thân, 1 âm lên áo người lái); thử thêm 1 âm lên chân → 4 | **Có, một phần**: chân, bàn chân người lái và nhiều đốm trên áo vẫn bị tô; thêm click âm thứ 4 lên chân chỉ bớt một ít, không hết | Biên mui, cản sau, bánh xe bám sát; không lem ra đường / xe máy / taxi phía sau. Khe lan can cabin lúc bị tô lúc không | `tuktuk_img013.jpg` (3 click), `tuktuk_img013_4click.jpg` |
+| img_002 (tuk-tuk giữa phố đông, YOLO26 bỏ sót ở Part 2) | SAM 2.1 base | 2 (dương: thân xe + mui) | **Không gồm người lái** (áo xanh ở ghế trước không bị tô) dù không cần click âm | Mask lấp kín khoang hành khách: người đứng phía sau nhìn qua khoang mở cũng bị tô (lỗ lớn, đáng lẽ phải bỏ theo 4.2 mục 2) | `tuktuk_img002.jpg` |
+| img_032 (xích lô phía trước, đứng cạnh người) | SAM 2.1 base | 3 (dương: nệm ghế + bánh trước, âm: người đứng cạnh); thử thêm 2 âm vào lòng 2 bánh → 5 | **Không**: người đứng bên phải không bị tô nhờ click âm | **Hai bánh xe bị tô đặc**, cả phần nan hoa trống. Thêm click âm vào giữa bánh **không** khoét được lỗ (mask gần như không đổi: 8.6% → 8.2% ảnh) | `xichlo_img032.jpg` (3 click), `xichlo_img032_5click.jpg` |
 
-- Đối chiếu guideline mục 4.2: quy tắc nào giúp, quy tắc nào thiếu? <<>>
-- *(Tuỳ chọn)* Interactor SAM trong CVAT: làm được / không (lỗi gì, đã thử gì); khác gì offline: <<>>
+- Đối chiếu guideline mục 4.2: quy tắc nào giúp, quy tắc nào thiếu?
+  - **Giúp**: 4.2 mục 1 (bám phần nhìn thấy) — SAM làm tốt ở biên ngoài, cả 3 mask không lem ra nền hay bóng đổ (mục 3). 4.1 mục 4 (người lái là `person` riêng) cho biết phải loại người lái: click âm làm được ở img_032 và img_002, nhưng không sạch ở img_013 khi người ngồi sát trong cabin.
+  - **Không đạt bằng click**: 4.2 mục 2 (lỗ lớn phải bỏ ra). Nan hoa bánh xích lô (img_032) và khoang hành khách tuk-tuk (img_002) là lỗ lớn hơn 5% diện tích vật nhưng SAM tô đặc; click âm không sửa được → phải sửa polygon bằng tay trong CVAT.
+  - **Thiếu**: guideline chưa nói rõ (1) người ngồi **trong** cabin tuk-tuk: phần người bị khung xe che thuộc xe hay người; (2) nan hoa bánh xe có tính là "lỗ" phải khoét không, hay chấp nhận tô đặc cả bánh. Hai ca này đưa vào calibration (Part 6).
+  - Click cần thiết: 2–3 click cho biên ngoài là đủ; click thêm chỉ có tác dụng với vùng liền khối (người), gần như vô tác dụng với cấu trúc mảnh (nan hoa, lan can).
+- *(Tuỳ chọn)* Interactor SAM trong CVAT: không làm (ưu tiên thời gian cho Part 6).
 
 ## 6. Calibration (Part 6)
 
@@ -75,7 +83,7 @@ Nếu Rework / Hold, việc cần làm tiếp: <<>>
 
 ## 8. Ghi chú cá nhân
 
-- **Dùng AI để làm bài** (công cụ nào, việc gì, kiểm tra thế nào; "không dùng" nếu không): <<>>
+- **Dùng AI để làm bài** (công cụ nào, việc gì, kiểm tra thế nào; "không dùng" nếu không): Claude (Anthropic) — giải thích quy trình lab; soạn nhận xét trong `model_log.csv` từ ảnh `viz/` của cùng các lệnh chạy (số box khớp 215 / 139 / 8 / 16); soạn nháp mục 1–3 từ `qc/threshold_sweep.csv`, `qc/review_stats.md` và `labels/gold_manual.json`; ở Part 5, Claude chạy `sam2_points.py` (cùng ảnh, cùng `sam2.1_b.pt`) cho img_002, img_032 và bản 4 click của img_013, xem từng mask và soạn mục 5 (bản 3 click của img_013 do tôi tự chạy). Tôi đã mở lại các ảnh trong `viz/` và `masks/` để đối chiếu, và kiểm các con số với file `qc/` gốc.
 - Gold có bị nhiễm không (bạn có nhìn pre-label hay hỏi AI trước khi gán xong)? <<không / có, như sau: ...>>
 - Máy / GPU / CVAT dùng; vướng mắc cài đặt: <<>>
 - Dùng cache `data/cache/` thay vì tự chạy? <<không / có, vì ...>>
